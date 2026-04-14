@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="es" style="background:#14171A;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>IEE — Índice de Estabilidad Ejecutiva | RENDIR</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #14171A;
+    --azul: #146B99;
+    --azul-claro: #1E8FC5;
+    --gris: #9A9A9A;
+    --fondo: #F5F5F3;
+    --blanco: #ffffff;
+    --alerta-verde: #2E7D5E;
+    --alerta-amarillo: #C4952A;
+    --alerta-rojo: #C0392B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { background: #14171A !important; min-height: 100%; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #14171A !important;
+    color: #ffffff;
+    min-height: 100%;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 60px 40px 50px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--azul);
+    border: 1px solid var(--azul);
+    padding: 5px 12px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    color: var(--blanco);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--azul-claro);
+  }
+
+  .hero p {
+    color: var(--gris);
+    font-size: 14px;
+    max-width: 520px;
+    margin-bottom: 10px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+  }
+
+  .meta-item {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gris);
+  }
+
+  .meta-item strong {
+    display: block;
+    color: var(--blanco);
+    font-size: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* FORM CONTAINER */
+  .form-container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  /* SECCIÓN */
+  .seccion {
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .seccion.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .seccion-titulo {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--azul);
+    margin-bottom: 6px;
+  }
+
+  .seccion-subtitulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--blanco);
+    margin-bottom: 6px;
+  }
+
+  .seccion-desc {
+    font-size: 13px;
+    color: var(--gris);
+    margin-bottom: 28px;
+    font-style: italic;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--azul) 0%, transparent 100%);
+    margin-bottom: 28px;
+    opacity: 0.4;
+  }
+
+  /* CAMPOS PERFIL */
+  .campo-grupo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 560px) {
+    .campo-grupo { grid-template-columns: 1fr; }
+    .hero, .form-container { padding-left: 20px; padding-right: 20px; }
+    .header { padding: 24px 20px 0; }
+  }
+
+  .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .campo label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gris);
+  }
+
+  .campo input,
+  .campo select {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--blanco);
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .campo select option {
+    background: var(--negro);
+    color: var(--blanco);
+  }
+
+  .campo input:focus,
+  .campo select:focus {
+    border-color: var(--azul);
+  }
+
+  .campo input::placeholder { color: rgba(255,255,255,0.25); }
+
+  /* BLOQUE A — SLIDERS */
+  .item-percepcion {
+    margin-bottom: 28px;
+  }
+
+  .item-percepcion-texto {
+    font-size: 14px;
+    color: var(--blanco);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .slider-label {
+    font-size: 10px;
+    color: var(--gris);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--azul);
+    cursor: pointer;
+    border: 2px solid var(--negro);
+    box-shadow: 0 0 0 1px var(--azul);
+    transition: transform 0.15s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
+
+  .slider-valor {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--azul-claro);
+    min-width: 28px;
+    text-align: center;
+  }
+
+  /* BLOQUE B — RADIO FREQUENCY */
+  .item-interferencia {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .item-interferencia:last-child {
+    border-bottom: none;
+  }
+
+  .item-interferencia-texto {
+    font-size: 14px;
+    color: var(--blanco);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .radio-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .radio-opcion {
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .radio-opcion input[type="radio"] {
+    display: none;
+  }
+
+  .radio-opcion label {
+    display: block;
+    text-align: center;
+    padding: 10px 6px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--gris);
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+    user-select: none;
+  }
+
+  .radio-opcion input[type="radio"]:checked + label {
+    background: var(--azul);
+    border-color: var(--azul);
+    color: var(--blanco);
+  }
+
+  .radio-opcion label:hover {
+    border-color: var(--azul);
+    color: var(--blanco);
+  }
+
+  /* BLOQUE C */
+  .campo-largo textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--blanco);
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.6;
+  }
+
+  .campo-largo textarea:focus {
+    border-color: var(--azul);
+  }
+
+  .campo-largo textarea::placeholder {
+    color: rgba(255,255,255,0.2);
+    font-style: italic;
+  }
+
+  /* NEWSLETTER */
+  .newsletter-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .newsletter-check input[type="checkbox"] {
+    display: none;
+  }
+
+  .check-custom {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: all 0.2s;
+  }
+
+  .check-custom.checked {
+    background: var(--azul);
+    border-color: var(--azul);
+  }
+
+  .check-custom svg {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .check-custom.checked svg { opacity: 1; }
+
+  .check-texto {
+    font-size: 12px;
+    color: var(--gris);
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  /* BOTÓN ENVIAR */
+  .btn-enviar {
+    width: 100%;
+    padding: 18px;
+    background: var(--azul);
+    color: var(--blanco);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 32px;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-enviar:hover { background: var(--azul-claro); }
+  .btn-enviar:active { transform: scale(0.99); }
+  .btn-enviar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* PANTALLA CONFIRMACIÓN */
+  .confirmacion {
+    display: none;
+    text-align: center;
+    padding: 60px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .confirmacion-icono {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 28px;
+  }
+
+  .confirmacion-tag {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--azul);
+    margin-bottom: 16px;
+  }
+
+  .confirmacion h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--blanco);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .confirmacion p {
+    color: var(--gris);
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .confirmacion .cta-link {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 14px 32px;
+    border: 1px solid var(--azul);
+    color: var(--azul);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+
+  .confirmacion .cta-link:hover {
+    background: var(--azul);
+    color: var(--blanco);
+  }
+
+  /* ERROR */
+  .error-msg {
+    display: none;
+    background: rgba(192, 57, 43, 0.15);
+    border: 1px solid rgba(192, 57, 43, 0.4);
+    color: #e74c3c;
+    padding: 12px 16px;
+    font-size: 13px;
+    border-radius: 2px;
+    margin-top: 16px;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--azul);
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* PIE */
+  .footer-form {
+    text-align: center;
+    padding: 20px 40px 40px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-form a {
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+  }
+
+  .footer-form a:hover { color: var(--azul); }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">IEE — Índice de Estabilidad Ejecutiva</div>
+  <h1>¿Cómo funciona <em>realmente</em> tu sistema cognitivo?</h1>
+  <p>El IEE no te pregunta cómo crees que funciona tu sistema. Detecta la distancia entre tu percepción y las señales reales que tu sistema está emitiendo.</p>
+  <p>Al finalizar recibirás por email tu Perfil de Estabilidad Ejecutiva con tu lectura estratégica personalizada.</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <strong>3 min</strong>
+      Duración estimada
+    </div>
+    <div class="meta-item">
+      <strong>Gratuito</strong>
+      Sin coste
+    </div>
+    <div class="meta-item">
+      <strong>Confidencial</strong>
+      Solo para ti
+    </div>
+  </div>
+</div>
+
+<!-- FORMULARIO -->
+<div class="form-container" id="formContainer">
+  <form id="ieeForm" novalidate>
+
+    <!-- PERFIL -->
+    <div class="seccion" id="sec0">
+      <div class="seccion-titulo">Datos de perfil</div>
+      <div class="seccion-subtitulo">Contexto profesional</div>
+      <div class="seccion-desc">Estos datos personalizan la lectura de tu resultado. No se compartirán con terceros.</div>
+      <div class="divider"></div>
+
+      <div class="campo" style="margin-bottom:16px;">
+        <label>Email *</label>
+        <input type="email" id="email" placeholder="tu@email.com" required>
+      </div>
+
+      <div class="campo-grupo">
+        <div class="campo">
+          <label>Rol *</label>
+          <select id="rol" required>
+            <option value="" disabled selected>Selecciona</option>
+            <option value="Socio / C-Level">Socio / C-Level</option>
+            <option value="Director/a de área">Director/a de área</option>
+            <option value="Profesional senior">Profesional senior con autonomía</option>
+            <option value="Mando intermedio">Mando intermedio</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Sector *</label>
+          <select id="sector" required>
+            <option value="" disabled selected>Selecciona</option>
+            <option value="Jurídico">Jurídico</option>
+            <option value="Consultoría">Consultoría</option>
+            <option value="Financiero">Financiero</option>
+            <option value="Sanitario">Sanitario</option>
+            <option value="Tecnológico">Tecnológico</option>
+            <option value="Industrial">Industrial</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="campo" style="margin-top:16px;">
+        <label>Volumen decisional diario *</label>
+        <select id="volumen" required>
+          <option value="" disabled selected>Selecciona</option>
+          <option value="Más de 10 decisiones relevantes">Más de 10 decisiones relevantes al día</option>
+          <option value="Entre 5 y 10 decisiones">Entre 5 y 10 decisiones al día</option>
+          <option value="Menos de 5 decisiones">Menos de 5 decisiones al día</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- BLOQUE A -->
+    <div class="seccion" id="sec1">
+      <div class="seccion-titulo">Bloque A — Percepción del sistema</div>
+      <div class="seccion-subtitulo">¿Cómo percibes tu rendimiento?</div>
+      <div class="seccion-desc">Valora cada área de 1 (muy bajo) a 5 (muy alto) según tu percepción habitual.</div>
+      <div class="divider"></div>
+
+      <div class="item-percepcion">
+        <div class="item-percepcion-texto">Mi capacidad para mantener la concentración en tareas complejas sin dispersarme.</div>
+        <div class="slider-wrapper">
+          <span class="slider-label">Muy bajo</span>
+          <input type="range" id="a1" min="1" max="5" value="3" oninput="actualizarSlider('a1val', this.value)">
+          <span class="slider-valor" id="a1val">3</span>
+          <span class="slider-label">Muy alto</span>
+        </div>
+      </div>
+
+      <div class="item-percepcion">
+        <div class="item-percepcion-texto">La consistencia de mis decisiones cuando hay varias opciones igualmente plausibles.</div>
+        <div class="slider-wrapper">
+          <span class="slider-label">Muy bajo</span>
+          <input type="range" id="a2" min="1" max="5" value="3" oninput="actualizarSlider('a2val', this.value)">
+          <span class="slider-valor" id="a2val">3</span>
+          <span class="slider-label">Muy alto</span>
+        </div>
+      </div>
+
+      <div class="item-percepcion">
+        <div class="item-percepcion-texto">La calidad con la que me recupero tras períodos de alta exigencia.</div>
+        <div class="slider-wrapper">
+          <span class="slider-label">Muy bajo</span>
+          <input type="range" id="a3" min="1" max="5" value="3" oninput="actualizarSlider('a3val', this.value)">
+          <span class="slider-valor" id="a3val">3</span>
+          <span class="slider-label">Muy alto</span>
+        </div>
+      </div>
+
+      <div class="item-percepcion">
+        <div class="item-percepcion-texto">Mi rendimiento bajo presión temporal cuando los plazos son reales y urgentes.</div>
+        <div class="slider-wrapper">
+          <span class="slider-label">Muy bajo</span>
+          <input type="range" id="a4" min="1" max="5" value="3" oninput="actualizarSlider('a4val', this.value)">
+          <span class="slider-valor" id="a4val">3</span>
+          <span class="slider-label">Muy alto</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE B -->
+    <div class="seccion" id="sec2">
+      <div class="seccion-titulo">Bloque B — Señales de interferencia</div>
+      <div class="seccion-subtitulo">¿Con qué frecuencia ocurre esto?</div>
+      <div class="seccion-desc">Indica con qué frecuencia ocurre cada situación en tu trabajo habitual.</div>
+      <div class="divider"></div>
+
+      <div class="item-interferencia">
+        <div class="item-interferencia-texto">Reviso decisiones ya tomadas con más frecuencia que antes, buscando confirmar que estuvieron bien.</div>
+        <div class="radio-group">
+          <div class="radio-opcion"><input type="radio" name="b1" id="b1_1" value="1" required><label for="b1_1">Nunca</label></div>
+          <div class="radio-opcion"><input type="radio" name="b1" id="b1_2" value="2"><label for="b1_2">Rara vez</label></div>
+          <div class="radio-opcion"><input type="radio" name="b1" id="b1_3" value="3"><label for="b1_3">A veces</label></div>
+          <div class="radio-opcion"><input type="radio" name="b1" id="b1_4" value="4"><label for="b1_4">Frecuentemente</label></div>
+          <div class="radio-opcion"><input type="radio" name="b1" id="b1_5" value="5"><label for="b1_5">Siempre</label></div>
+        </div>
+      </div>
+
+      <div class="item-interferencia">
+        <div class="item-interferencia-texto">La calidad de mis decisiones varía según el momento del día o la carga acumulada.</div>
+        <div class="radio-group">
+          <div class="radio-opcion"><input type="radio" name="b2" id="b2_1" value="1" required><label for="b2_1">Nunca</label></div>
+          <div class="radio-opcion"><input type="radio" name="b2" id="b2_2" value="2"><label for="b2_2">Rara vez</label></div>
+          <div class="radio-opcion"><input type="radio" name="b2" id="b2_3" value="3"><label for="b2_3">A veces</label></div>
+          <div class="radio-opcion"><input type="radio" name="b2" id="b2_4" value="4"><label for="b2_4">Frecuentemente</label></div>
+          <div class="radio-opcion"><input type="radio" name="b2" id="b2_5" value="5"><label for="b2_5">Siempre</label></div>
+        </div>
+      </div>
+
+      <div class="item-interferencia">
+        <div class="item-interferencia-texto">Después de descansar, mi cabeza no vuelve al nivel de antes — noto que sigo pesado/a.</div>
+        <div class="radio-group">
+          <div class="radio-opcion"><input type="radio" name="b3" id="b3_1" value="1" required><label for="b3_1">Nunca</label></div>
+          <div class="radio-opcion"><input type="radio" name="b3" id="b3_2" value="2"><label for="b3_2">Rara vez</label></div>
+          <div class="radio-opcion"><input type="radio" name="b3" id="b3_3" value="3"><label for="b3_3">A veces</label></div>
+          <div class="radio-opcion"><input type="radio" name="b3" id="b3_4" value="4"><label for="b3_4">Frecuentemente</label></div>
+          <div class="radio-opcion"><input type="radio" name="b3" id="b3_5" value="5"><label for="b3_5">Siempre</label></div>
+        </div>
+      </div>
+
+      <div class="item-interferencia">
+        <div class="item-interferencia-texto">Cuando tengo varias variables complejas que integrar, llego a conclusiones que luego no sostengo del todo.</div>
+        <div class="radio-group">
+          <div class="radio-opcion"><input type="radio" name="b4" id="b4_1" value="1" required><label for="b4_1">Nunca</label></div>
+          <div class="radio-opcion"><input type="radio" name="b4" id="b4_2" value="2"><label for="b4_2">Rara vez</label></div>
+          <div class="radio-opcion"><input type="radio" name="b4" id="b4_3" value="3"><label for="b4_3">A veces</label></div>
+          <div class="radio-opcion"><input type="radio" name="b4" id="b4_4" value="4"><label for="b4_4">Frecuentemente</label></div>
+          <div class="radio-opcion"><input type="radio" name="b4" id="b4_5" value="5"><label for="b4_5">Siempre</label></div>
+        </div>
+      </div>
+
+      <div class="item-interferencia">
+        <div class="item-interferencia-texto">Necesito más contraste externo que antes para sentirme seguro/a de una decisión que antes habría resuelto solo/a.</div>
+        <div class="radio-group">
+          <div class="radio-opcion"><input type="radio" name="b5" id="b5_1" value="1" required><label for="b5_1">Nunca</label></div>
+          <div class="radio-opcion"><input type="radio" name="b5" id="b5_2" value="2"><label for="b5_2">Rara vez</label></div>
+          <div class="radio-opcion"><input type="radio" name="b5" id="b5_3" value="3"><label for="b5_3">A veces</label></div>
+          <div class="radio-opcion"><input type="radio" name="b5" id="b5_4" value="4"><label for="b5_4">Frecuentemente</label></div>
+          <div class="radio-opcion"><input type="radio" name="b5" id="b5_5" value="5"><label for="b5_5">Siempre</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE C -->
+    <div class="seccion" id="sec3">
+      <div class="seccion-titulo">Bloque C — Señal de consciencia</div>
+      <div class="seccion-subtitulo">Tu sistema visto desde dentro</div>
+      <div class="seccion-desc">C1 puntúa. C2 es opcional y no puntúa — ayuda a contextualizar tu resultado.</div>
+      <div class="divider"></div>
+
+      <!-- C1 — PUNTÚA -->
+      <div class="item-interferencia">
+        <div class="item-interferencia-texto">
+          <strong style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--azul); display:block; margin-bottom:8px;">C1 — Puntúa</strong>
+          En los últimos 3 meses, ¿con qué frecuencia has tenido la sensación de que tu sistema no respondió como debería en una situación importante?
+        </div>
+        <div class="radio-group">
+          <div class="radio-opcion"><input type="radio" name="c1" id="c1_1" value="1" required><label for="c1_1">Nunca</label></div>
+          <div class="radio-opcion"><input type="radio" name="c1" id="c1_2" value="2"><label for="c1_2">Rara vez</label></div>
+          <div class="radio-opcion"><input type="radio" name="c1" id="c1_3" value="3"><label for="c1_3">A veces</label></div>
+          <div class="radio-opcion"><input type="radio" name="c1" id="c1_4" value="4"><label for="c1_4">Frecuentemente</label></div>
+          <div class="radio-opcion"><input type="radio" name="c1" id="c1_5" value="5"><label for="c1_5">Siempre</label></div>
+        </div>
+      </div>
+
+      <!-- C2 — NO PUNTÚA -->
+      <div class="campo-largo" style="margin-top:8px;">
+        <label class="campo" style="margin-bottom:8px; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--azul);">C2 — Opcional, no puntúa</label>
+        <label class="campo" style="margin-bottom:10px; font-size:14px; color:var(--blanco); letter-spacing:0; text-transform:none;">Si quieres, descríbela brevemente. Esto enriquece la interpretación de tu resultado.</label>
+        <textarea id="bloqueC" placeholder="Puede ser una decisión, una reunión, un momento de presión..."></textarea>
+      </div>
+
+      <!-- NEWSLETTER -->
+      <div style="margin-top: 28px;">
+        <div class="newsletter-check" id="newsletterToggle" onclick="toggleNewsletter()">
+          <div class="check-custom checked" id="checkBox">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="check-texto">Quiero recibir artículos y contenido de RENDIR sobre rendimiento cognitivo ejecutivo. Puedo darme de baja en cualquier momento desde el propio email.</span>
+        </div>
+        <input type="hidden" id="newsletter" value="si">
+      </div>
+    </div>
+
+    <button type="submit" class="btn-enviar" id="btnEnviar">
+      <span id="btnTexto">Obtener mi resultado</span>
+      <div class="btn-spinner" id="btnSpinner"></div>
+    </button>
+
+    <div class="error-msg" id="errorMsg">
+      Hay campos sin completar. Por favor, revisa el formulario antes de enviar.
+    </div>
+
+  </form>
+</div>
+
+<!-- CONFIRMACIÓN -->
+<div class="confirmacion" id="confirmacion">
+  <div class="confirmacion-icono" id="confIcono">✓</div>
+  <div class="confirmacion-tag">IEE completado</div>
+  <h2 id="confTitulo">Tu resultado está en camino.</h2>
+  <p id="confPerfil"></p>
+  <p>En los próximos minutos recibirás un email con tu Perfil de Estabilidad Ejecutiva y la lectura estratégica personalizada.</p>
+  <p>Si no lo ves en unos minutos, revisa la carpeta de spam.</p>
+  <a href="https://www.rendir-altorendimiento.com" class="cta-link">Conocer el proceso RENDIR →</a>
+</div>
+
+<div class="footer-form">
+  <a href="https://www.rendir-altorendimiento.com/politica-de-privacidad">Política de privacidad</a> · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="394b5c575d504b794b5c575d504b1458554d564b5c575d5054505c574d56175a5654">[email&#160;protected]</a> · +34 637 671 768
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" defer></script><script>
+  // ─── UTILIDADES ───────────────────────────────────────────
+  function actualizarSlider(id, val) {
+    document.getElementById(id).textContent = val;
+    actualizarProgreso();
+  }
+
+  function toggleNewsletter() {
+    const box = document.getElementById('checkBox');
+    const input = document.getElementById('newsletter');
+    box.classList.toggle('checked');
+    input.value = box.classList.contains('checked') ? 'si' : 'no';
+  }
+
+  // ─── PROGRESS BAR ────────────────────────────────────────
+  function actualizarProgreso() {
+    const campos = ['email','rol','sector','volumen'];
+    const radios = ['b1','b2','b3','b4','b5','c1'];
+    let completados = 0;
+    const total = campos.length + radios.length + 4; // +4 sliders siempre tienen valor
+
+    campos.forEach(id => {
+      if (document.getElementById(id)?.value) completados++;
+    });
+    radios.forEach(name => {
+      if (document.querySelector(`input[name="${name}"]:checked`)) completados++;
+    });
+    completados += 4; // sliders siempre cuentan
+
+    const pct = Math.round((completados / total) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  // ─── ANIMACIÓN SECCIONES ─────────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.seccion').forEach(s => observer.observe(s));
+
+  // ─── CÁLCULO PERFIL ──────────────────────────────────────
+  function calcularPerfil(a, b) {
+    if (b <= 12) {
+      if (a >= 15) return {
+        perfil: 'Punto Ciego Activo',
+        nivel: 'ATENCIÓN',
+        color: '#C4952A',
+        emoji: '⚠',
+        lectura: 'Tu percepción de rendimiento es alta, pero tu sistema no emite señales significativas de interferencia en este momento. Este perfil merece vigilancia: la confianza alta puede retrasar la detección de señales tempranas. La Evaluación RENDIR permite confirmar si existe un gap real entre percepción y funcionamiento objetivo.'
+      };
+      return {
+        perfil: 'Sistema Estable',
+        nivel: 'ESTABLE',
+        color: '#2E7D5E',
+        emoji: '✓',
+        lectura: 'Tu sistema muestra baja interferencia acumulada y tu autopercepción es consistente con esas señales. No hay indicadores de alerta activos. La Evaluación RENDIR puede darte una fotografía objetiva de tu funcionamiento cognitivo para usarla como línea de base ante futuros cambios de exigencia.'
+      };
+    }
+    if (b <= 18) {
+      if (a >= 15) return {
+        perfil: 'Alerta Silenciosa',
+        nivel: 'ALERTA',
+        color: '#C0392B',
+        emoji: '!',
+        lectura: 'Tu percepción de rendimiento es alta, pero tu sistema emite señales moderadas que no coinciden con esa percepción. Este desajuste es el patrón más común en directivos que operan por encima de su coste óptimo sin saberlo. La Evaluación RENDIR es exactamente para esto: medir lo que no se puede ver desde dentro.'
+      };
+      return {
+        perfil: 'Interferencia Incipiente',
+        nivel: 'ATENCIÓN',
+        color: '#C4952A',
+        emoji: '~',
+        lectura: 'Tu sistema muestra señales tempranas de interferencia acumulada. En este momento no comprometen tu rendimiento de forma visible, pero indican que algo está costando más de lo que debería. Este es el momento preciso para actuar — antes de que el deterioro sea visible para tu entorno.'
+      };
+    }
+    if (a >= 15) return {
+      perfil: 'Deterioro No Detectado',
+      nivel: 'ALERTA CRÍTICA',
+      color: '#C0392B',
+      emoji: '!!',
+      lectura: 'Tu sistema emite señales claras de interferencia acumulada mientras tu percepción de rendimiento sigue alta. Este es el perfil de mayor riesgo decisional: un sistema que falla mientras cree que funciona bien. La Evaluación RENDIR está diseñada exactamente para este perfil.'
+    };
+    if (a >= 10) return {
+      perfil: 'Señal Clara',
+      nivel: 'ALERTA',
+      color: '#C0392B',
+      emoji: '!',
+      lectura: 'Tu sistema muestra señales claras de interferencia acumulada y eres consciente de que algo no funciona como debería. Este es el momento preciso para actuar antes de que el deterioro sea visible para tu entorno o afecte a decisiones de alto impacto.'
+    };
+    return {
+      perfil: 'Intervención Prioritaria',
+      nivel: 'ALERTA CRÍTICA',
+      color: '#C0392B',
+      emoji: '!!',
+      lectura: 'Tu sistema emite señales intensas de interferencia y tu autopercepción refleja esa realidad. La intervención en este momento es prioritaria para recuperar la estabilidad decisional. El proceso RENDIR está diseñado para este punto de partida.'
+    };
+  }
+
+  // ─── VALIDACIÓN ──────────────────────────────────────────
+  function validarFormulario() {
+    const requeridos = ['email','rol','sector','volumen'];
+    const radios = ['b1','b2','b3','b4','b5','c1'];
+
+    for (const id of requeridos) {
+      if (!document.getElementById(id).value) return false;
+    }
+    for (const name of radios) {
+      if (!document.querySelector(`input[name="${name}"]:checked`)) return false;
+    }
+    const email = document.getElementById('email').value;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return false;
+    return true;
+  }
+
+  // ─── ENVÍO ───────────────────────────────────────────────
+  document.getElementById('ieeForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    if (!validarFormulario()) {
+      document.getElementById('errorMsg').style.display = 'block';
+      document.getElementById('errorMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    document.getElementById('errorMsg').style.display = 'none';
+    document.getElementById('btnTexto').style.display = 'none';
+    document.getElementById('btnSpinner').style.display = 'block';
+    document.getElementById('btnEnviar').disabled = true;
+
+    // Recoger datos
+    const email    = document.getElementById('email').value.trim();
+    const rol      = document.getElementById('rol').value;
+    const sector   = document.getElementById('sector').value;
+    const volumen  = document.getElementById('volumen').value;
+    const a1 = parseInt(document.getElementById('a1').value);
+    const a2 = parseInt(document.getElementById('a2').value);
+    const a3 = parseInt(document.getElementById('a3').value);
+    const a4 = parseInt(document.getElementById('a4').value);
+    const puntuacionA = a1 + a2 + a3 + a4;
+    const b1 = parseInt(document.querySelector('input[name="b1"]:checked').value);
+    const b2 = parseInt(document.querySelector('input[name="b2"]:checked').value);
+    const b3 = parseInt(document.querySelector('input[name="b3"]:checked').value);
+    const b4 = parseInt(document.querySelector('input[name="b4"]:checked').value);
+    const b5 = parseInt(document.querySelector('input[name="b5"]:checked').value);
+    const c1 = parseInt(document.querySelector('input[name="c1"]:checked').value);
+    const puntuacionB = b1 + b2 + b3 + b4 + b5 + c1; // C1 suma al bloque de interferencia
+    const bloqueC   = document.getElementById('bloqueC').value;
+    const newsletter = document.getElementById('newsletter').value;
+    const resultado  = calcularPerfil(puntuacionA, puntuacionB);
+
+    // ── LLAMAR AL BACKEND VELO PARA LECTURA CLAUDE ───────────
+    // Mostrar mensaje de espera mientras Claude genera la lectura
+    document.getElementById('btnTexto').textContent = 'Generando tu lectura personalizada...';
+
+    let lecturaPersonalizada = resultado.lectura; // fallback si Claude no está disponible
+
+    try {
+      const backendResp = await fetch('/_functions/generarLecturaIEE', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rol, sector, volumen,
+          puntuacionA, a1, a2, a3, a4,
+          puntuacionB, b1, b2, b3, b4, b5, c1,
+          perfil: resultado.perfil,
+          nivel: resultado.nivel,
+          c2: bloqueC || ''
+        })
+      });
+      const backendData = await backendResp.json();
+      if (backendData.lectura) {
+        lecturaPersonalizada = backendData.lectura;
+      }
+    } catch (err) {
+      console.warn('Usando lectura predefinida:', err);
+    }
+
+    // Texto del email al usuario (con lectura de Claude)
+    const emailUsuarioTexto = `
+IEE — RESULTADO PERSONAL
+────────────────────────────────────
+Perfil:  ${resultado.perfil}
+Nivel:   ${resultado.nivel}
+────────────────────────────────────
+
+${lecturaPersonalizada}
+
+────────────────────────────────────
+PRÓXIMO PASO
+
+Si quieres saber con precisión cómo funciona tu sistema cognitivo bajo carga real — con datos objetivos de latencia, precisión y recuperación — la Evaluación RENDIR está diseñada para eso.
+
+No es un cuestionario. Es un diagnóstico neuropsicológico que mide lo que no se puede ver desde dentro.
+
+Escríbenos:
+rendir@rendir-altorendimiento.com
++34 637 671 768
+www.rendir-altorendimiento.com
+
+────────────────────────────────────
+RENDIR | Auditoría Cognitiva Ejecutiva
+Para darte de baja de esta lista responde a este email con "baja".
+    `.trim();
+
+    // Texto del email a Catalina
+    const emailAdminTexto = `
+NUEVO IEE COMPLETADO
+────────────────────────────────
+Email:     ${email}
+Rol:       ${rol}
+Sector:    ${sector}
+Volumen:   ${volumen}
+Newsletter: ${newsletter}
+────────────────────────────────
+PUNTUACIONES
+A (Percepción): ${puntuacionA}/20  [A1:${a1} A2:${a2} A3:${a3} A4:${a4}]
+B+C1 (Interferencia): ${puntuacionB}/30  [B1:${b1} B2:${b2} B3:${b3} B4:${b4} B5:${b5} C1:${c1}]
+────────────────────────────────
+PERFIL: ${resultado.perfil}
+NIVEL:  ${resultado.nivel}
+────────────────────────────────
+LECTURA CLAUDE:
+${lecturaPersonalizada}
+────────────────────────────────
+C2 (contexto libre):
+${bloqueC || '(no respondido)'}
+    `.trim();
+
+    try {
+      // ── GUARDAR EN WIX DATA ───────────────────────────────────
+      const WIX_SITE_ID = '3f69326b-85c7-481f-a7c8-1f3643634c6c';
+
+      await fetch(`https://www.wixapis.com/wix-data/v2/items`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'wix-site-id': WIX_SITE_ID
+        },
+        body: JSON.stringify({
+          dataCollectionId: 'IEEResultados',
+          dataItem: {
+            data: {
+              email, rol, sector,
+              volumenDecisional: volumen,
+              a1, a2, a3, a4, puntuacionA,
+              b1, b2, b3, b4, b5, c1, puntuacionB,
+              perfil: resultado.perfil,
+              nivelAlerta: resultado.nivel,
+              lecturaEstrategica: lecturaPersonalizada,
+              bloqueC: bloqueC || '',
+              suscripcionNewsletter: newsletter === 'si',
+              fechaEnvio: new Date().toISOString()
+            }
+          }
+        })
+      }).catch(() => {});
+
+      // ── ENVÍO VÍA WEB3FORMS ──────────────────────────────────
+      // IMPORTANTE: Sustituye "TU_ACCESS_KEY" por tu clave real de Web3Forms
+      // Consíguela gratis en https://web3forms.com
+      const WEB3FORMS_KEY = '4ed60433-09e5-41c2-91c9-fd3c25725aa4';
+
+      // Email al usuario
+      await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          to: email,
+          subject: `Tu resultado IEE — ${resultado.perfil} | RENDIR`,
+          message: emailUsuarioTexto,
+          from_name: 'RENDIR — Alto Rendimiento Ejecutivo',
+          replyto: 'rendir@rendir-altorendimiento.com'
+        })
+      });
+
+      // Email a Catalina
+      await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          to: 'rendir@rendir-altorendimiento.com',
+          subject: `[IEE] Nuevo resultado: ${resultado.perfil} — ${email}`,
+          message: emailAdminTexto,
+          from_name: 'Sistema IEE RENDIR'
+        })
+      });
+
+    } catch (err) {
+      console.warn('Error enviando email:', err);
+      // Continuar igualmente — mostrar confirmación
+    }
+
+    // ── MOSTRAR CONFIRMACIÓN ────────────────────────────────
+    document.getElementById('formContainer').style.display = 'none';
+    document.getElementById('progressBar').style.width = '100%';
+
+    const conf = document.getElementById('confirmacion');
+    const icono = document.getElementById('confIcono');
+    icono.textContent = resultado.emoji;
+    icono.style.background = resultado.color + '22';
+    icono.style.border = `1px solid ${resultado.color}44`;
+    icono.style.color = resultado.color;
+
+    document.getElementById('confPerfil').textContent =
+      `Perfil detectado: ${resultado.perfil} — ${resultado.nivel}`;
+
+    conf.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ─── ACTUALIZAR PROGRESO EN CAMBIOS ─────────�
