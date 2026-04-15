@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es" style="background:#14171A;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>IEE — Índice de Estabilidad Ejecutiva | RENDIR</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --negro: #14171A;
+  --azul: #146B99;
+  --azul-claro: #1E8FC5;
+  --gris: #9A9A9A;
+  --borde: rgba(255,255,255,0.08);
+  --blanco: #ffffff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { background:#14171A !important; color:#fff; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.7; min-height:100%; }
+.progress-bar { position:fixed; top:0; left:0; height:2px; background:var(--azul); transition:width 0.5s; z-index:100; width:0; }
+
+/* HERO */
+.hero { padding:52px 40px 40px; max-width:740px; margin:0 auto; }
+.hero-tag { display:inline-block; font-size:10px; letter-spacing:0.32em; text-transform:uppercase; color:var(--azul); border:1px solid rgba(20,107,153,0.5); padding:6px 14px; margin-bottom:24px; }
+.hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(28px,5vw,50px); font-weight:300; line-height:1.12; margin-bottom:18px; }
+.hero h1 em { font-style:italic; color:var(--azul-claro); }
+.hero-intro { color:var(--gris); font-size:14px; max-width:520px; margin-bottom:8px; line-height:1.7; }
+.hero-aviso { font-size:12px; color:rgba(255,255,255,0.3); font-style:italic; margin-top:6px; max-width:480px; }
+.hero-meta { display:flex; gap:32px; margin-top:28px; flex-wrap:wrap; }
+.meta-item { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gris); }
+.meta-item strong { display:block; color:#fff; font-size:18px; font-family:'Cormorant Garamond',serif; font-weight:400; text-transform:none; letter-spacing:0; }
+
+/* FORM */
+.form-container { max-width:740px; margin:0 auto; padding:0 40px 80px; }
+.seccion { margin-bottom:48px; }
+.seccion-header { display:flex; align-items:baseline; gap:12px; margin-bottom:6px; }
+.seccion-num { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:300; color:rgba(20,107,153,0.3); line-height:1; }
+.seccion-titulo { font-size:10px; letter-spacing:0.32em; text-transform:uppercase; color:var(--azul); }
+.seccion-subtitulo { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:400; margin-bottom:6px; line-height:1.3; }
+.seccion-desc { font-size:13px; color:var(--gris); margin-bottom:24px; font-style:italic; line-height:1.6; }
+.divider { height:1px; background:linear-gradient(90deg,var(--azul),transparent); margin-bottom:24px; opacity:0.35; }
+
+/* CAMPOS */
+.campo-grupo { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.campo { display:flex; flex-direction:column; gap:6px; }
+.campo label { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gris); }
+.campo input,.campo select { background:rgba(255,255,255,0.04); border:1px solid var(--borde); color:#fff; padding:12px 14px; font-family:'DM Sans',sans-serif; font-size:14px; border-radius:2px; outline:none; transition:border-color 0.2s; width:100%; appearance:none; -webkit-appearance:none; }
+.campo select option { background:#14171A; color:#fff; }
+.campo input:focus,.campo select:focus { border-color:var(--azul); }
+.campo input::placeholder { color:rgba(255,255,255,0.2); }
+
+/* PREGUNTA CARD */
+.pregunta-card { background:rgba(255,255,255,0.025); border:1px solid var(--borde); border-left:3px solid rgba(20,107,153,0.35); padding:20px 22px; margin-bottom:14px; border-radius:0 2px 2px 0; transition:border-left-color 0.2s; }
+.pregunta-card.respondida { border-left-color:var(--azul); }
+.pregunta-num { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--azul); margin-bottom:8px; display:block; }
+.pregunta-texto { font-size:14px; color:#fff; line-height:1.65; margin-bottom:16px; }
+
+/* ESCALA FRECUENCIA */
+.escala-grupo { display:flex; gap:6px; flex-wrap:wrap; }
+.escala-op { flex:1; min-width:70px; }
+.escala-op input[type="radio"] { display:none; }
+.escala-op label { display:block; text-align:center; padding:9px 4px; font-size:11px; color:var(--gris); border:1px solid rgba(255,255,255,0.07); cursor:pointer; transition:all 0.18s; border-radius:2px; user-select:none; line-height:1.3; }
+.escala-op input:checked + label { background:var(--azul); border-color:var(--azul); color:#fff; }
+.escala-op label:hover { border-color:rgba(20,107,153,0.5); color:#fff; }
+
+/* ESCALA NUMÉRICA */
+.escala-num { display:flex; gap:6px; }
+.escala-num-op { flex:1; }
+.escala-num-op input[type="radio"] { display:none; }
+.escala-num-op label { display:block; text-align:center; padding:10px 4px; font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:400; color:var(--gris); border:1px solid rgba(255,255,255,0.07); cursor:pointer; transition:all 0.18s; border-radius:2px; user-select:none; }
+.escala-num-op input:checked + label { background:var(--azul); border-color:var(--azul); color:#fff; }
+.escala-num-op label:hover { border-color:rgba(20,107,153,0.5); color:#fff; }
+.escala-etiq { display:flex; justify-content:space-between; margin-top:6px; }
+.escala-etiq span { font-size:10px; color:rgba(255,255,255,0.25); letter-spacing:0.05em; }
+
+/* TEXTAREA */
+.ta { width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--borde); color:#fff; padding:14px 16px; font-family:'DM Sans',sans-serif; font-size:14px; border-radius:2px; outline:none; transition:border-color 0.2s; resize:vertical; min-height:80px; line-height:1.6; }
+.ta:focus { border-color:var(--azul); }
+.ta::placeholder { color:rgba(255,255,255,0.18); font-style:italic; }
+
+/* NEWSLETTER */
+.nl-wrap { display:flex; align-items:flex-start; gap:12px; margin-top:24px; cursor:pointer; }
+.chk { width:18px; height:18px; min-width:18px; border:1px solid rgba(255,255,255,0.2); border-radius:2px; display:flex; align-items:center; justify-content:center; margin-top:2px; transition:all 0.2s; }
+.chk.on { background:var(--azul); border-color:var(--azul); }
+.chk svg { opacity:0; transition:opacity 0.2s; }
+.chk.on svg { opacity:1; }
+.nl-txt { font-size:12px; color:var(--gris); line-height:1.5; }
+
+/* BOTÓN */
+.btn-enviar { width:100%; padding:18px; background:var(--azul); color:#fff; border:none; font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.28em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; margin-top:32px; border-radius:2px; }
+.btn-enviar:hover { background:var(--azul-claro); }
+.btn-enviar:disabled { opacity:0.5; cursor:not-allowed; }
+.spinner { display:none; width:16px; height:16px; border:2px solid rgba(255,255,255,0.3); border-top-color:white; border-radius:50%; animation:spin 0.7s linear infinite; margin:0 auto; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.error-msg { display:none; background:rgba(192,57,43,0.12); border:1px solid rgba(192,57,43,0.35); color:#e74c3c; padding:12px 16px; font-size:13px; border-radius:2px; margin-top:14px; }
+
+/* RESULTADO */
+.resultado { display:none; max-width:740px; margin:0 auto; padding:52px 40px 80px; animation:fadeUp 0.6s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.res-tag { font-size:10px; letter-spacing:0.32em; text-transform:uppercase; color:var(--azul); margin-bottom:14px; }
+.res-wrap { padding:28px; border:1px solid var(--borde); background:rgba(255,255,255,0.025); margin-bottom:28px; border-radius:2px; border-left:3px solid var(--azul); }
+.res-nivel { font-size:11px; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:8px; }
+.res-nombre { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:300; line-height:1.15; margin-bottom:16px; }
+.res-scores { display:flex; gap:20px; flex-wrap:wrap; padding-top:16px; border-top:1px solid var(--borde); }
+.res-score { font-size:11px; color:var(--gris); letter-spacing:0.05em; }
+.res-score strong { display:block; color:#fff; font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:400; letter-spacing:0; }
+.res-lectura-titulo { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:400; margin-bottom:16px; color:var(--azul-claro); }
+.res-lectura { font-size:14px; line-height:1.8; color:rgba(255,255,255,0.85); }
+.res-lectura p { margin-bottom:14px; }
+.loading-dots { display:flex; align-items:center; gap:10px; color:var(--gris); font-size:13px; font-style:italic; }
+.dots { display:flex; gap:4px; }
+.dots span { width:5px; height:5px; background:var(--azul); border-radius:50%; animation:pulse 1.2s ease-in-out infinite; }
+.dots span:nth-child(2) { animation-delay:0.2s; }
+.dots span:nth-child(3) { animation-delay:0.4s; }
+@keyframes pulse { 0%,80%,100%{opacity:0.2;transform:scale(0.8)} 40%{opacity:1;transform:scale(1)} }
+.res-cta { display:none; margin-top:36px; padding:28px; border:1px solid rgba(20,107,153,0.3); background:rgba(20,107,153,0.06); border-radius:2px; }
+.res-cta p { font-size:13px; color:var(--gris); line-height:1.7; margin-bottom:18px; }
+.res-cta-btn { display:inline-block; padding:13px 28px; background:var(--azul); color:#fff; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; text-decoration:none; border-radius:2px; transition:background 0.2s; }
+.res-cta-btn:hover { background:var(--azul-claro); }
+.res-descarga { display:inline-block; margin-top:12px; font-size:11px; color:var(--azul); letter-spacing:0.1em; cursor:pointer; background:none; border:none; text-decoration:underline; text-underline-offset:3px; font-family:'DM Sans',sans-serif; }
+
+/* FOOTER */
+.footer-form { text-align:center; padding:20px 40px 40px; font-size:11px; color:rgba(255,255,255,0.18); letter-spacing:0.05em; }
+.footer-form a { color:rgba(255,255,255,0.25); text-decoration:none; }
+.footer-form a:hover { color:var(--azul); }
+
+@media (max-width:560px) {
+  .hero,.form-container,.resultado { padding-left:20px; padding-right:20px; }
+  .campo-grupo { grid-template-columns:1fr; }
+  .escala-op label { font-size:10px; padding:8px 2px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="hero">
+  <div class="hero-tag">IEE — Índice de Estabilidad Ejecutiva</div>
+  <h1>No mide lo que crees.<br>Mide <em>cómo decides</em> cuando nadie mira.</h1>
+  <p class="hero-intro">Este índice no evalúa tus capacidades ni tu rendimiento general. Evalúa la estabilidad de tu sistema cognitivo bajo las condiciones reales en las que opera: alta responsabilidad, presión sostenida e interferencia constante.</p>
+  <p class="hero-aviso">Las respuestas honestas son más valiosas que las respuestas correctas. No hay respuestas correctas.</p>
+  <div class="hero-meta">
+    <div class="meta-item"><strong>8 min</strong>Duración estimada</div>
+    <div class="meta-item"><strong>Gratuito</strong>Sin coste</div>
+    <div class="meta-item"><strong>Confidencial</strong>Solo para ti</div>
+  </div>
+</div>
+
+<div class="form-container" id="formContainer">
+<form id="ieeForm" novalidate>
+
+  <!-- 00 CONTEXTO -->
+  <div class="seccion">
+    <div class="seccion-header"><span class="seccion-num">00</span><span class="seccion-titulo">Contexto profesional</span></div>
+    <div class="seccion-subtitulo">Quién eres en este momento</div>
+    <div class="seccion-desc">Estos datos no puntúan. Permiten que la lectura de tu resultado sea específica para tu contexto, no genérica.</div>
+    <div class="divider"></div>
+    <div class="campo" style="margin-bottom:14px;">
+      <label>Email — recibirás tu resultado aquí *</label>
+      <input type="email" id="email" placeholder="tu@email.com" required>
+    </div>
+    <div class="campo-grupo">
+      <div class="campo">
+        <label>Rol *</label>
+        <select id="rol" required>
+          <option value="" disabled selected>Selecciona</option>
+          <option value="Socio / C-Level / CEO">Socio / C-Level / CEO</option>
+          <option value="Director/a de área">Director/a de área</option>
+          <option value="Profesional senior con alta autonomía">Profesional senior autónomo</option>
+          <option value="Mando intermedio con equipo">Mando intermedio</option>
+          <option value="Otro perfil de alta responsabilidad">Otro</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Sector *</label>
+        <select id="sector" required>
+          <option value="" disabled selected>Selecciona</option>
+          <option value="Jurídico / Legal">Jurídico / Legal</option>
+          <option value="Consultoría / Estrategia">Consultoría / Estrategia</option>
+          <option value="Financiero / Inversión">Financiero / Inversión</option>
+          <option value="Sanitario / Salud">Sanitario / Salud</option>
+          <option value="Tecnológico / Digital">Tecnológico / Digital</option>
+          <option value="Industrial / Manufactura">Industrial / Manufactura</option>
+          <option value="Educación / Academia">Educación / Academia</option>
+          <option value="Otro sector">Otro</option>
+        </select>
+      </div>
+    </div>
+    <div class="campo" style="margin-top:12px;">
+      <label>¿Cuántas horas semanales operas bajo alta exigencia decisional? *</label>
+      <select id="volumen" required>
+        <option value="" disabled selected>Selecciona</option>
+        <option value="Más de 50 horas semanales">Más de 50 horas — jornadas sin límite claro</option>
+        <option value="Entre 40 y 50 horas semanales">Entre 40 y 50 horas — exigencia constante</option>
+        <option value="Entre 30 y 40 horas semanales">Entre 30 y 40 horas — alta demanda gestionable</option>
+        <option value="Menos de 30 horas semanales">Menos de 30 horas</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 01 PRECISIÓN DECISIONAL -->
+  <div class="seccion">
+    <div class="seccion-header"><span class="seccion-num">01</span><span class="seccion-titulo">Bloque A — Precisión decisional</span></div>
+    <div class="seccion-subtitulo">El criterio bajo el que decides</div>
+    <div class="seccion-desc">No evalúes tus decisiones en general. Evalúa lo que ocurre específicamente cuando hay varias opciones razonables y la presión pide una respuesta rápida.</div>
+    <div class="divider"></div>
+
+    <div class="pregunta-card" id="card_a1">
+      <span class="pregunta-num">A · 01</span>
+      <div class="pregunta-texto">Cuando una decisión importante ya está tomada, ¿con qué frecuencia revisas mentalmente si fue la correcta, incluso cuando el resultado fue positivo?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="a1" id="a1_1" value="1" required><label for="a1_1">Nunca</label></div>
+        <div class="escala-op"><input type="radio" name="a1" id="a1_2" value="2"><label for="a1_2">Rara vez</label></div>
+        <div class="escala-op"><input type="radio" name="a1" id="a1_3" value="3"><label for="a1_3">A veces</label></div>
+        <div class="escala-op"><input type="radio" name="a1" id="a1_4" value="4"><label for="a1_4">Con frecuencia</label></div>
+        <div class="escala-op"><input type="radio" name="a1" id="a1_5" value="5"><label for="a1_5">Siempre</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_a2">
+      <span class="pregunta-num">A · 02</span>
+      <div class="pregunta-texto">Ante dos opciones igualmente razonables, ¿notas que tu criterio de selección varía dependiendo del momento del día o de la carga que llevas acumulada?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="a2" id="a2_1" value="1" required><label for="a2_1">Nunca</label></div>
+        <div class="escala-op"><input type="radio" name="a2" id="a2_2" value="2"><label for="a2_2">Rara vez</label></div>
+        <div class="escala-op"><input type="radio" name="a2" id="a2_3" value="3"><label for="a2_3">A veces</label></div>
+        <div class="escala-op"><input type="radio" name="a2" id="a2_4" value="4"><label for="a2_4">Con frecuencia</label></div>
+        <div class="escala-op"><input type="radio" name="a2" id="a2_5" value="5"><label for="a2_5">Siempre</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_a3">
+      <span class="pregunta-num">A · 03</span>
+      <div class="pregunta-texto">Cuando necesitas validar una decisión que antes tomabas con total claridad, ¿buscas más contraste externo del que solías necesitar?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="a3" id="a3_1" value="1" required><label for="a3_1">Nunca</label></div>
+        <div class="escala-op"><input type="radio" name="a3" id="a3_2" value="2"><label for="a3_2">Rara vez</label></div>
+        <div class="escala-op"><input type="radio" name="a3" id="a3_3" value="3"><label for="a3_3">A veces</label></div>
+        <div class="escala-op"><input type="radio" name="a3" id="a3_4" value="4"><label for="a3_4">Con frecuencia</label></div>
+        <div class="escala-op"><input type="radio" name="a3" id="a3_5" value="5"><label for="a3_5">Siempre</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_a4">
+      <span class="pregunta-num">A · 04</span>
+      <div class="pregunta-texto">En una semana de alta presión, ¿en cuántos días de 7 sientes que aplicaste tu criterio óptimo — no el criterio disponible en ese momento?</div>
+      <div class="escala-num">
+        <div class="escala-num-op"><input type="radio" name="a4" id="a4_1" value="1" required><label for="a4_1">1</label></div>
+        <div class="escala-num-op"><input type="radio" name="a4" id="a4_2" value="2"><label for="a4_2">2</label></div>
+        <div class="escala-num-op"><input type="radio" name="a4" id="a4_3" value="3"><label for="a4_3">3</label></div>
+        <div class="escala-num-op"><input type="radio" name="a4" id="a4_4" value="4"><label for="a4_4">4</label></div>
+        <div class="escala-num-op"><input type="radio" name="a4" id="a4_5" value="5"><label for="a4_5">5</label></div>
+        <div class="escala-num-op"><input type="radio" name="a4" id="a4_6" value="6"><label for="a4_6">6</label></div>
+        <div class="escala-num-op"><input type="radio" name="a4" id="a4_7" value="7"><label for="a4_7">7</label></div>
+      </div>
+      <div class="escala-etiq"><span>Muy pocos días</span><span>Todos los días</span></div>
+    </div>
+  </div>
+
+  <!-- 02 COSTE COGNITIVO -->
+  <div class="seccion">
+    <div class="seccion-header"><span class="seccion-num">02</span><span class="seccion-titulo">Bloque B — Coste cognitivo real</span></div>
+    <div class="seccion-subtitulo">Lo que paga tu sistema por seguir funcionando</div>
+    <div class="seccion-desc">No se trata de cansancio general. Se trata de las señales que tu sistema emite cuando el coste de operar es más alto de lo que debería ser.</div>
+    <div class="divider"></div>
+
+    <div class="pregunta-card" id="card_b1">
+      <span class="pregunta-num">B · 01</span>
+      <div class="pregunta-texto">Al final de una jornada de alta demanda, ¿el nivel de pensamiento con el que llegas a casa es suficiente para gestionar situaciones personales que también requieren criterio?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="b1" id="b1_1" value="5" required><label for="b1_1">Nunca</label></div>
+        <div class="escala-op"><input type="radio" name="b1" id="b1_2" value="4"><label for="b1_2">Rara vez</label></div>
+        <div class="escala-op"><input type="radio" name="b1" id="b1_3" value="3"><label for="b1_3">A veces</label></div>
+        <div class="escala-op"><input type="radio" name="b1" id="b1_4" value="2"><label for="b1_4">Con frecuencia</label></div>
+        <div class="escala-op"><input type="radio" name="b1" id="b1_5" value="1"><label for="b1_5">Siempre</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_b2">
+      <span class="pregunta-num">B · 02</span>
+      <div class="pregunta-texto">¿Detectas que cometes errores pequeños o descuidos en tareas que dominas — no por falta de conocimiento, sino porque el sistema no está del todo presente?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="b2" id="b2_1" value="1" required><label for="b2_1">Nunca</label></div>
+        <div class="escala-op"><input type="radio" name="b2" id="b2_2" value="2"><label for="b2_2">Rara vez</label></div>
+        <div class="escala-op"><input type="radio" name="b2" id="b2_3" value="3"><label for="b2_3">A veces</label></div>
+        <div class="escala-op"><input type="radio" name="b2" id="b2_4" value="4"><label for="b2_4">Con frecuencia</label></div>
+        <div class="escala-op"><input type="radio" name="b2" id="b2_5" value="5"><label for="b2_5">Siempre</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_b3">
+      <span class="pregunta-num">B · 03</span>
+      <div class="pregunta-texto">Cuando trabajas en un análisis complejo que requiere integrar varias fuentes de información simultáneamente, ¿llegas a conclusiones que no sostienes del todo cuando las revisas más tarde con más calma?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="b3" id="b3_1" value="1" required><label for="b3_1">Nunca</label></div>
+        <div class="escala-op"><input type="radio" name="b3" id="b3_2" value="2"><label for="b3_2">Rara vez</label></div>
+        <div class="escala-op"><input type="radio" name="b3" id="b3_3" value="3"><label for="b3_3">A veces</label></div>
+        <div class="escala-op"><input type="radio" name="b3" id="b3_4" value="4"><label for="b3_4">Con frecuencia</label></div>
+        <div class="escala-op"><input type="radio" name="b3" id="b3_5" value="5"><label for="b3_5">Siempre</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_b4">
+      <span class="pregunta-num">B · 04</span>
+      <div class="pregunta-texto">¿Con qué frecuencia la interferencia del contexto — interrupciones, cambios de prioridad, demandas simultáneas — impide que termines un bloque de trabajo con el nivel de profundidad que la tarea requería?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="b4" id="b4_1" value="1" required><label for="b4_1">Nunca</label></div>
+        <div class="escala-op"><input type="radio" name="b4" id="b4_2" value="2"><label for="b4_2">Rara vez</label></div>
+        <div class="escala-op"><input type="radio" name="b4" id="b4_3" value="3"><label for="b4_3">A veces</label></div>
+        <div class="escala-op"><input type="radio" name="b4" id="b4_4" value="4"><label for="b4_4">Con frecuencia</label></div>
+        <div class="escala-op"><input type="radio" name="b4" id="b4_5" value="5"><label for="b4_5">Siempre</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 RECUPERACIÓN -->
+  <div class="seccion">
+    <div class="seccion-header"><span class="seccion-num">03</span><span class="seccion-titulo">Bloque C — Recuperación efectiva</span></div>
+    <div class="seccion-subtitulo">Si el descanso repara o solo pausa</div>
+    <div class="seccion-desc">La trampa del rendimiento sostenido es que el sistema aprende a funcionar con menos. Estas preguntas detectan si tu recuperación es real o solo nominal.</div>
+    <div class="divider"></div>
+
+    <div class="pregunta-card" id="card_c1">
+      <span class="pregunta-num">C · 01</span>
+      <div class="pregunta-texto">Después de una noche de sueño normal, ¿tu nivel de claridad mental equivale al que tenías antes de los períodos de alta carga, o partes desde un nivel ligeramente inferior?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="c1" id="c1_1" value="1" required><label for="c1_1">Recupero del todo</label></div>
+        <div class="escala-op"><input type="radio" name="c1" id="c1_2" value="3"><label for="c1_2">Casi — poca diferencia</label></div>
+        <div class="escala-op"><input type="radio" name="c1" id="c1_3" value="5"><label for="c1_3">Parto de menos</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_c2">
+      <span class="pregunta-num">C · 02</span>
+      <div class="pregunta-texto">Durante tus períodos de descanso — vacaciones, fines de semana — ¿cuánto tiempo tarda tu sistema en desconectarse realmente del modo de alerta ejecutiva?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="c2" id="c2_1" value="1" required><label for="c2_1">Horas</label></div>
+        <div class="escala-op"><input type="radio" name="c2" id="c2_2" value="2"><label for="c2_2">1-2 días</label></div>
+        <div class="escala-op"><input type="radio" name="c2" id="c2_3" value="3"><label for="c2_3">3-4 días</label></div>
+        <div class="escala-op"><input type="radio" name="c2" id="c2_4" value="4"><label for="c2_4">Más de 4 días</label></div>
+        <div class="escala-op"><input type="radio" name="c2" id="c2_5" value="5"><label for="c2_5">No llega a desconectarse</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_c3">
+      <span class="pregunta-num">C · 03</span>
+      <div class="pregunta-texto">Comparada con hace 3 años, ¿cómo valoras tu capacidad actual de sostener pensamiento profundo durante más de 90 minutos sin fragmentación?</div>
+      <div class="escala-num">
+        <div class="escala-num-op"><input type="radio" name="c3" id="c3_1" value="5" required><label for="c3_1">1</label></div>
+        <div class="escala-num-op"><input type="radio" name="c3" id="c3_2" value="4"><label for="c3_2">2</label></div>
+        <div class="escala-num-op"><input type="radio" name="c3" id="c3_3" value="3"><label for="c3_3">3</label></div>
+        <div class="escala-num-op"><input type="radio" name="c3" id="c3_4" value="2"><label for="c3_4">4</label></div>
+        <div class="escala-num-op"><input type="radio" name="c3" id="c3_5" value="1"><label for="c3_5">5</label></div>
+      </div>
+      <div class="escala-etiq"><span>Mucho peor que antes</span><span>Igual o mejor</span></div>
+    </div>
+  </div>
+
+  <!-- 04 SEÑAL DE CONSCIENCIA -->
+  <div class="seccion">
+    <div class="seccion-header"><span class="seccion-num">04</span><span class="seccion-titulo">Bloque D — Señal de consciencia</span></div>
+    <div class="seccion-subtitulo">Lo que tu sistema ya sabe pero no ha nombrado</div>
+    <div class="seccion-desc">Esta última sección puntúa de forma diferente. Requiere que pares un momento antes de responder.</div>
+    <div class="divider"></div>
+
+    <div class="pregunta-card" id="card_d1">
+      <span class="pregunta-num">D · 01 — Puntúa</span>
+      <div class="pregunta-texto">En los últimos 6 meses, ¿con qué frecuencia has tenido la sensación de que en alguna situación importante — una reunión, una decisión, una conversación — tu sistema no estaba operando al nivel que la situación requería?</div>
+      <div class="escala-grupo">
+        <div class="escala-op"><input type="radio" name="d1" id="d1_1" value="1" required><label for="d1_1">Nunca</label></div>
+        <div class="escala-op"><input type="radio" name="d1" id="d1_2" value="2"><label for="d1_2">1-2 veces</label></div>
+        <div class="escala-op"><input type="radio" name="d1" id="d1_3" value="3"><label for="d1_3">3-5 veces</label></div>
+        <div class="escala-op"><input type="radio" name="d1" id="d1_4" value="4"><label for="d1_4">Más de 5 veces</label></div>
+        <div class="escala-op"><input type="radio" name="d1" id="d1_5" value="5"><label for="d1_5">Es un patrón</label></div>
+      </div>
+    </div>
+
+    <div class="pregunta-card" id="card_d2" style="border-left-color:rgba(154,154,154,0.3);">
+      <span class="pregunta-num" style="color:var(--gris);">D · 02 — Opcional, no puntúa</span>
+      <div class="pregunta-texto" style="color:rgba(255,255,255,0.7);">Si quieres, describe brevemente una de esas situaciones. No para justificarla — para nombrarla. Esto no afecta a la puntuación pero enriquece la lectura de tu resultado.</div>
+      <textarea class="ta" id="bloqueD2" placeholder="Una reunión, una decisión, un momento concreto..."></textarea>
+    </div>
+
+    <div class="nl-wrap" id="nlToggle" onclick="toggleNL()">
+      <div class="chk on" id="chk">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+          <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="nl-txt">Quiero recibir artículos y contenido de RENDIR sobre rendimiento cognitivo ejecutivo. Puedo darme de baja en cualquier momento desde el propio email.</span>
+    </div>
+    <input type="hidden" id="nl" value="si">
+  </div>
+
+  <button type="submit" class="btn-enviar" id="btnEnviar">
+    <span id="btnTxt">Obtener mi resultado</span>
+    <div class="spinner" id="btnSpin"></div>
+  </button>
+  <div class="error-msg" id="errorMsg">Hay preguntas sin responder. Revisa el formulario — todas las preguntas marcadas son necesarias para generar tu resultado.</div>
+</form>
+</div>
+
+<!-- RESULTADO -->
+<div class="resultado" id="resultado">
+  <div class="res-tag">IEE — Resultado personalizado</div>
+  <div class="res-wrap" id="resWrap">
+    <div class="res-nivel" id="rNivel"></div>
+    <div class="res-nombre" id="rPerfil"></div>
+    <div class="res-scores">
+      <div class="res-score"><strong id="rA">—</strong>Precisión decisional <span style="opacity:0.4">/20</span></div>
+      <div class="res-score"><strong id="rB">—</strong>Coste cognitivo <span style="opacity:0.4">/20</span></div>
+      <div class="res-score"><strong id="rC">—</strong>Recuperación <span style="opacity:0.4">/15</span></div>
+    </div>
+  </div>
+  <div class="res-lectura-titulo">Lectura estratégica de tu perfil</div>
+  <div class="res-lectura" id="rLectura">
+    <div class="loading-dots">
+      <div class="dots"><span></span><span></span><span></span></div>
+      Generando tu lectura personalizada...
+    </div>
+  </div>
+  <div class="res-cta" id="resCTA">
+    <p>El IEE detecta señales de interferencia a nivel de percepción y comportamiento. Lo que no puede medir es <em>cómo funciona realmente tu sistema cognitivo bajo carga</em> — la precisión objetiva, la latencia, la recuperación real. Eso es lo que mide la Evaluación RENDIR.</p>
+    <a href="https://www.rendir-altorendimiento.com/contacto" class="res-cta-btn">Solicitar información sobre la Evaluación</a><br>
+    <button class="res-descarga" onclick="descargar()">Descargar mi resultado</button>
+  </div>
+</div>
+
+<div class="footer-form">
+  <a href="https://www.rendir-altorendimiento.com/politica-de-privacidad">Política de privacidad</a> · rendir@rendir-altorendimiento.com · +34 637 671 768
+</div>
+
+<script>
+// ⚠️ Sustituye por tu API key de Anthropic (platform.claude.com)
+const ANTHROPIC_KEY = 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 ;
+const WEB3FORMS_KEY = '4ed60433-09e5-41c2-91c9-fd3c25725aa4';
+let resultadoFinal = {};
+
+function toggleNL() {
+  const c = document.getElementById('chk');
+  c.classList.toggle('on');
+  document.getElementById('nl').value = c.classList.contains('on') ? 'si' : 'no';
+}
+
+function actualizarProgreso() {
+  const radios = ['a1','a2','a3','a4','b1','b2','b3','b4','c1','c2','c3','d1'];
+  const campos = ['email','rol','sector','volumen'];
+  let ok = 0; const total = radios.length + campos.length;
+  radios.forEach(n => { if(document.querySelector(`input[name="${n}"]:checked`)) ok++; });
+  campos.forEach(id => { if(document.getElementById(id)?.value) ok++; });
+  document.getElementById('progressBar').style.width = Math.round((ok/total)*100)+'%';
+}
+
+document.querySelectorAll('input,select').forEach(el => el.addEventListener('change', () => {
+  actualizarProgreso();
+  if(el.name) { const card = document.getElementById('card_'+el.name); if(card) card.classList.add('respondida'); }
+}));
+
+function validar() {
+  for(const id of ['email','rol','sector','volumen']) if(!document.getElementById(id).value) return false;
+  for(const n of ['a1','a2','a3','a4','b1','b2','b3','b4','c1','c2','c3','d1']) if(!document.querySelector(`input[name="${n}"]:checked`)) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value);
+}
+
+function calcularPerfil(pA, pB, pC) {
+  if (pA <= 8 && pB <= 8 && pC <= 5) return {perfil:'Sistema de Alta Estabilidad',nivel:'ESTABLE',color:'#2E7D5E',fallback:'Tu sistema cognitivo muestra alta estabilidad en las tres dimensiones evaluadas. Precisión decisional, coste cognitivo y recuperación funcionan de forma consistente. Este perfil indica un sistema que opera dentro de sus parámetros óptimos bajo las condiciones actuales de exigencia.'};
+  if (pA >= 14 && pC >= 10) return {perfil:'Coste Oculto Elevado',nivel:'ALERTA CRÍTICA',color:'#C0392B',fallback:'Tu sistema mantiene el rendimiento visible a un coste que no es sostenible. La precisión decisional está comprometida y la recuperación no completa el ciclo. Este patrón —operar correctamente en apariencia mientras el sistema trabaja por encima de su umbral óptimo— es el de mayor riesgo a medio plazo.'};
+  if (pA >= 12) return {perfil:'Variabilidad Decisional Activa',nivel:'ALERTA',color:'#C0392B',fallback:'Tu criterio decisional muestra variabilidad significativa según las condiciones de carga. No indica falta de capacidad —indica que el sistema opera con recursos insuficientes para sostener la consistencia que el nivel de responsabilidad requiere.'};
+  if (pC >= 10) return {perfil:'Recuperación Comprometida',nivel:'ATENCIÓN',color:'#C4952A',fallback:'Tu sistema no está completando los ciclos de recuperación necesarios para el nivel de carga que gestiona. La precisión se mantiene, pero el coste acumulado de sostenerla es progresivamente mayor. Sin intervención, la variabilidad decisional es el siguiente paso.'};
+  if (pB >= 12) return {perfil:'Interferencia Acumulada',nivel:'ATENCIÓN',color:'#C4952A',fallback:'Tu sistema muestra señales claras de coste cognitivo acumulado. La interferencia del contexto impide que operes con la profundidad que tu nivel de responsabilidad requiere. El rendimiento es visible, pero el precio para sostenerlo está creciendo.'};
+  return {perfil:'Señales Tempranas Detectadas',nivel:'REVISIÓN',color:'#C4952A',fallback:'Tu sistema muestra señales tempranas de interferencia que no comprometen todavía el rendimiento visible, pero indican un margen de estabilidad reducido. Este es el momento óptimo para intervenir —antes de que las señales se conviertan en patrón.'};
+}
+
+async function generarLectura(datos, resultado) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body: JSON.stringify({
+      model:'claude-haiku-4-5-20251001',
+      max_tokens:600,
+      messages:[{role:'user',content:`Eres Catalina Heredia Riaño, neuropsicóloga fundadora de RENDIR — auditoría cognitiva ejecutiva. Voz directa, clínica, sin lenguaje motivacional. Nombras la realidad con precisión.
+
+Genera una lectura estratégica de 3 párrafos para este resultado IEE:
+
+PARTICIPANTE: ${datos.rol} | ${datos.sector} | ${datos.volumen}
+PERFIL: ${resultado.perfil} | ${resultado.nivel}
+
+PUNTUACIONES:
+- A (Precisión decisional): ${datos.pA}/20 [A1:${datos.a1} A2:${datos.a2} A3:${datos.a3} A4_días_óptimos:${datos.a4_raw}/7]
+- B (Coste cognitivo): ${datos.pB}/20 [B1_recursos_fin_jornada:${datos.b1} B2:${datos.b2} B3:${datos.b3} B4:${datos.b4}]
+- C (Recuperación): ${datos.pC}/15 [C1:${datos.c1} C2_tiempo_desconexión:${datos.c2} C3_comparativa_3años:${datos.c3}]
+- D (Señal consciencia): ${datos.d1}/5
+${datos.d2 ? `Situación descrita: "${datos.d2}"` : ''}
+
+Párrafo 1 — EL SISTEMA: Describe lo que revelan los datos sobre este sistema cognitivo en su contexto específico. Menciona las 2-3 dimensiones más relevantes. Habla del sistema, no de la persona en general.
+
+Párrafo 2 — LA IMPLICACIÓN: Nombra la consecuencia concreta para alguien con este rol y carga. ¿Qué tipo de situaciones son más vulnerables? Si existe D2, intégralo naturalmente.
+
+Párrafo 3 — LA DIRECCIÓN: Una observación de cierre que deje al lector con una pregunta que no tenía antes. Máximo 2 líneas. Sin mencionar RENDIR.
+
+TONO: Neuropsicóloga clínica hablando a un igual de alto nivel. Sin suavizantes. Máximo 220 palabras.`}]
+    })
+  });
+  const data = await resp.json();
+  if(data.content?.[0]?.text) return data.content[0].text;
+  throw new Error('Sin respuesta');
+}
+
+async function notificarAdmin(datos, resultado, lectura) {
+  await fetch('https://api.web3forms.com/submit',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      access_key:WEB3FORMS_KEY,
+      subject:`[IEE] ${resultado.perfil} — ${datos.email}`,
+      message:`NUEVO IEE\n${'═'.repeat(36)}\nEmail: ${datos.email}\nRol: ${datos.rol}\nSector: ${datos.sector}\nCarga: ${datos.volumen}\nNewsletter: ${datos.nl}\n${'═'.repeat(36)}\nA (Precisión): ${datos.pA}/20\nB (Coste): ${datos.pB}/20\nC (Recuperación): ${datos.pC}/15\nD (Señal): ${datos.d1}/5\n${'═'.repeat(36)}\nPERFIL: ${resultado.perfil}\nNIVEL: ${resultado.nivel}\n${'═'.repeat(36)}\nLECTURA:\n${lectura}\n${'═'.repeat(36)}\nD2: ${datos.d2||'(no respondido)'}`,
+      from_name:'Sistema IEE RENDIR'
+    })
+  });
+}
+
+function descargar() {
+  const r = resultadoFinal;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([`IEE — ÍNDICE DE ESTABILIDAD EJECUTIVA\nRENDIR | Auditoría Cognitiva Ejecutiva\n${'─'.repeat(44)}\nPerfil: ${r.perfil}\nNivel: ${r.nivel}\n${'─'.repeat(44)}\n\n${r.lectura}\n\n${'─'.repeat(44)}\nwww.rendir-altorendimiento.com\nrendir@rendir-altorendimiento.com`],{type:'text/plain;charset=utf-8'}));
+  a.download='IEE_RENDIR_resultado.txt'; a.click();
+}
+
+document.getElementById('ieeForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if(!validar()){
+    const err = document.getElementById('errorMsg');
+    err.style.display='block';
+    err.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  document.getElementById('errorMsg').style.display='none';
+  document.getElementById('btnTxt').style.display='none';
+  document.getElementById('btnSpin').style.display='block';
+  document.getElementById('btnEnviar').disabled=true;
+
+  const getR = n => +document.querySelector(`input[name="${n}"]:checked`).value;
+  const a1=getR('a1'),a2=getR('a2'),a3=getR('a3'),a4_raw=getR('a4');
+  const a4 = Math.round((8-a4_raw)*5/7); // invertir: 7 días óptimos = puntuación baja
+  const pA = a1+a2+a3+a4;
+  const b1=getR('b1'),b2=getR('b2'),b3=getR('b3'),b4=getR('b4');
+  const pB = b1+b2+b3+b4;
+  const c1=getR('c1'),c2=getR('c2'),c3=getR('c3');
+  const pC = c1+c2+c3;
+  const d1=getR('d1');
+
+  const datos = {
+    email:document.getElementById('email').value.trim(),
+    rol:document.getElementById('rol').value,
+    sector:document.getElementById('sector').value,
+    volumen:document.getElementById('volumen').value,
+    a1,a2,a3,a4,a4_raw,pA,
+    b1,b2,b3,b4,pB,
+    c1,c2,c3,pC,
+    d1,d2:document.getElementById('bloqueD2').value,
+    nl:document.getElementById('nl').value
+  };
+
+  const resultado = calcularPerfil(pA,pB,pC);
+
+  // Mostrar resultado inmediatamente
+  document.getElementById('formContainer').style.display='none';
+  document.getElementById('progressBar').style.width='100%';
+  document.getElementById('resultado').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  // Rellenar perfil
+  const rN = document.getElementById('rNivel');
+  rN.textContent=resultado.nivel; rN.style.color=resultado.color;
+  document.getElementById('rPerfil').textContent=resultado.perfil;
+  document.getElementById('resWrap').style.borderLeftColor=resultado.color;
+  document.getElementById('rA').textContent=pA;
+  document.getElementById('rB').textContent=pB;
+  document.getElementById('rC').textContent=pC;
+
+  // Generar lectura con Claude
+  let lectura = resultado.fallback;
+  try { lectura = await generarLectura(datos,resultado); }
+  catch(err){ console.warn('Usando fallback:',err); }
+
+  document.getElementById('rLectura').innerHTML =
+    lectura.split('\n\n').filter(p=>p.trim()).map(p=>`<p>${p.trim()}</p>`).join('');
+  document.getElementById('resCTA').style.display='block';
+
+  resultadoFinal={perfil:resultado.perfil,nivel:resultado.nivel,lectura};
+  notificarAdmin(datos,resultado,lectura).catch(()=>{});
+});
+</script>
+</body>
+</html>
